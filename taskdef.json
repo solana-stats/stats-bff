@@ -1,22 +1,20 @@
 {
-  "family": "stats-bff",
-  "containerDefinitions": [
-    {
-      "environment": [],
-      "name": "stats-bff",
-      "image": "solana-stats/stats-bff",
-      "cpu": 256,
-      "memory": 256,
-      "portMappings": [
-        {
-          "containerPort": 8080,
-          "hostPort": 8080
-        }
-      ],
-      "entryPoint": [
-        "/usr/sbin/apache2",
-      ],
-      "essential": true
-    }
-  ]
+	"family": "stats-bff",
+	"containerDefinitions": [{
+		"environment": [],
+		"name": "stats-bff",
+		"image": "solana-stats/stats-bff",
+		"cpu": 256,
+		"memory": 256,
+		"portMappings": [{
+			"containerPort": 8080,
+			"hostPort": 8080
+		}],
+		"entryPoint": [
+			"npm",
+			"run",
+			"start"
+		],
+		"essential": true
+	}]
 }
