@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.use('/health', healthRoute);
+app.use('/stats-bff/health', healthRoute);
 
 app.listen(8080, () => {
   console.log(`Stats-BFF Started Successfully`);
