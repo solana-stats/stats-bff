@@ -10,11 +10,9 @@
 			"containerPort": 8080,
 			"hostPort": 8080
 		}],
-		"entryPoint": [
-			"npm",
-			"run",
-			"start"
-		],
 		"essential": true
-	}]
+	}],
+	"requiresCompatibilities": [
+		"EC2"
+	]
 }
