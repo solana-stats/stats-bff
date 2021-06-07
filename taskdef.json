@@ -1,5 +1,6 @@
 {
 	"family": "stats-bff",
+	"taskRoleArn": "arn:aws:iam::255593285316:role/solana-stats-ec2",
 	"containerDefinitions": [{
 		"environment": [],
 		"name": "stats-bff",
