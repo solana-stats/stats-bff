@@ -1,9 +1,11 @@
+const client = require('../config/db.config')
+
 const minuteQuery = `SELECT Extract(year from block_time) as year,
     Extract(month from block_time) as month,
     Extract(day from block_time) as day,
     Extract(hour from block_time) as hour,
     Extract(minute from block_time) as minute,
-    SUM(num_transactions) as total_transactions
+    SUM(num_transactions) as value
     FROM stats.block_stats
     WHERE block_time > now()  - INTERVAL '1 DAY' AND block_time < now()
     GROUP BY Date_Part('minute', block_time), Date_Part('hour',block_time), Date_Part('day',block_time), Date_Part('month',block_time), Date_Part('year',block_time)
@@ -13,7 +15,7 @@ const hourQuery = `SELECT Extract(year from block_time) as year,
     Extract(month from block_time) as month,
     Extract(day from block_time) as day,
     Extract(hour from block_time) as hour,
-    Sum(num_transactions) as total_transactions
+    Sum(num_transactions) as value
     FROM stats.block_stats
     WHERE block_time > now()  - INTERVAL '7 DAY' AND block_time < now()
     GROUP BY Date_Part('hour',block_time), Date_Part('day',block_time), Date_Part('month',block_time), Date_Part('year',block_time)
@@ -22,7 +24,7 @@ const hourQuery = `SELECT Extract(year from block_time) as year,
 const dayQuery = `SELECT Extract(year from block_time) as year,
     Extract(month from block_time) as month,
     Extract(day from block_time) as day,
-    SUM(num_transactions) as total_transactions
+    SUM(num_transactions) as value
     FROM stats.block_stats
     WHERE block_time > now() - INTERVAL '7 DAY' AND block_time < now()
     GROUP BY Date_Part('day',block_time), Date_Part('month',block_time), Date_Part('year',block_time)
@@ -55,12 +57,27 @@ function createQuery(interval, stat) {
 async function getTransactionData(req, res) {
     const stat = req.params.stat;
     const interval = req.query.interval;
+
     let query = createQuery(interval, stat);
-    res.send(200);
+    let dbResponse = await client.query(query);
+    res.send(convertToDataSeries(dbResponse));
 }
 
+
+
 function convertToDataSeries(data) {
-    
+    let formatedResponse = [];
+    data.rows.forEach(row => {
+        let hour = row.hour ? row.hour : 0;
+        let minute = row.minute ? row.minute : 0;
+        let date = new Date(row.year, (row.month - 1), row.day, hour, minute);
+        let unixTime = date.getTime() / 1000;
+        formatedResponse.push({
+            time: unixTime,
+            value: Number(row.value)
+        });
+    });
+    return formatedResponse;
 }
 
 module.exports = getTransactionData
