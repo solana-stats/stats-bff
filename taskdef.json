@@ -4,8 +4,8 @@
 		"environment": [],
 		"name": "stats-bff",
 		"image": "solana-stats/stats-bff",
-		"cpu": 256,
-		"memory": 256,
+		"cpu": 1024,
+		"memory": 1024,
 		"portMappings": [{
 			"containerPort": 8080,
 			"hostPort": 0
