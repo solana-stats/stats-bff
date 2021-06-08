@@ -23,11 +23,6 @@ const readSecrets = async () => {
                     process.env['dbHost'] = secret.host;
                     process.env['dbPort'] = secret.port;
                     process.env['dbName'] = secret.dbname;
-                    console.log( process.env['dbUsername']);
-                    console.log( process.env['dbPassword']);
-                    console.log( process.env['dbHost']);
-                    console.log( process.env['dbPort']);
-                    console.log( process.env['dbName']);
                     resolve(true);
                 } else {
                     let buff = new Buffer(data.SecretBinary, 'base64');
