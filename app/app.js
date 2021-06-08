@@ -20,9 +20,10 @@ async function init() {
 }
 
 init().then(() => {
-  const transactionRoute = require('./routes/transactions');
+  const {getPastDayTPS, getTransactionData} = require('./routes/transactions');
   const feeRoute = require('./routes/fees');
-  app.use('/stats-bff/transactions/:stat', transactionRoute);
+  app.use('/stats-bff/transactions/:stat', getTransactionData);
+  app.use('/stats-bff/tps', getPastDayTPS);
   app.use('/stats-bff/fee', feeRoute);
   app.listen(8080, () => {
     console.log(`Stats-BFF Started Successfully`);
